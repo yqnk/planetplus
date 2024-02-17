@@ -62,8 +62,9 @@ std::string bold(const std::string& message);
  *
  * @param message The message to be printed.
  * @param color   The color of the text.
+ * @param output  The output stream to be used.
  */
-void print_color(const std::string& message, color::Code color);
+void print_color(const std::string& message, color::Code color, std::ostream& output = std::cout);
 
 /**
  * @brief Prints an error message in red.

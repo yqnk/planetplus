@@ -28,17 +28,17 @@ std::string bold(const std::string& message)
     return "\033[1m" + message + "\033[0m";
 }
 
-void print_color(const std::string& message, color::Code col)
+void print_color(const std::string& message, color::Code col, std::ostream& output)
 {
     // Code to print colored text
-    std::cout << color::Modifier(col) << message
-              << color::Modifier(color::FG_DEFAULT) << std::endl;
+    output << color::Modifier(col) << message
+           << color::Modifier(color::FG_DEFAULT) << std::endl;
 }
 
 void print_error(const std::string& message)
 {
     // Code to print an error message in red
-    print_color(message, color::FG_RED);
+    print_color(message, color::FG_RED, std::cerr);
 }
 
 void print_success(const std::string& message)
