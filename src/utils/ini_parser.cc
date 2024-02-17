@@ -1,9 +1,12 @@
 #include "ini_parser.h"
 
-#include <fstream>
-#include <map>
-#include <string>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "cli/tools.h"
 
@@ -12,144 +15,183 @@ namespace config
 IniParser::IniParser(const std::string& filePath)
     : path(filePath)
 {
-    // Load the INI file when creating the parser
-    load();
+    parse();
 }
 
 IniParser::~IniParser()
 {
-    // Save the INI file when destroying the parser
-    save();
-}
-
-void IniParser::load()
-{
-    std::ifstream file(path);
-    std::string line;
-    std::string currentSection;
-
-    if (file.is_open())
+    if (!saved)
     {
-        while (std::getline(file, line))
-        {
-            if (line.empty()) // Ignore empty lines
-                continue;
-
-            trim(line);
-
-            // Check if the line is a comment
-            if (line[0] == ';')
-            {
-                // Handle comments
-            }
-            else if (line[0] == '[' && line[line.size() - 1] == ']')
-            { // New section
-                // Handle section
-            }
-            else
-            {
-                // Handle key-value pair
-            }
-        }
-        file.close();
+        cli_tools::print_warning(
+            "Configuration file not saved. Some changes may be lost.");
     }
-    else
-    {
-        cli_tools::print_error(
-            "!! Unable to open file: " + cli_tools::bold(path));
-    }
-}
-
-void IniParser::save()
-{
-    std::ofstream file(path);
-
-    if (file.is_open())
-    {
-        for (const auto& section : data)
-        {
-            file << "[" << section.first << "]\n";
-            // Write comments first if they exist
-            auto commentIt = section.second.find(";comment");
-            if (commentIt != section.second.end() && !commentIt->second.empty())
-            {
-                file << commentIt->second;
-            }
-            for (const auto& pair : section.second)
-            {
-                if (pair.first != ";comment")
-                {
-                    file << pair.first << "=" << pair.second << "\n";
-                }
-            }
-            file << "\n";
-        }
-        file.close();
-    }
-    else
-    {
-        cli_tools::print_error(
-            "!! Unable to open file: " + cli_tools::bold(path));
-    }
+    save(path);
 }
 
 void IniParser::trim(std::string& str)
 {
-    str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }));
-
-    str.erase(std::find_if(str.rbegin(), str.rend(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }).base(), str.end());
+    str.erase(0, str.find_first_not_of(" \t"));
+    str.erase(str.find_last_not_of(" \t") + 1);
 }
 
-std::string IniParser::get(const std::string& section, const std::string& key)
+std::string IniParser::get_value(
+    const std::string& sectionName, const std::string& key) const
 {
-    if (data.find(section) != data.end() &&
-        data[section].find(key) != data[section].end())
+    auto section = sections.find(sectionName);
+    if (section != sections.end())
     {
-        return data[section][key];
-    }
-    return "";
-}
-
-void IniParser::set(const std::string& section, const std::string& key,
-    const std::string& value)
-{
-    data[section][key] = value;
-}
-
-void IniParser::add_key(const std::string& section, const std::string& key,
-    const std::string& value)
-{
-    data[section][key] = value;
-}
-
-void IniParser::remove_key(const std::string& section, const std::string& key)
-{
-    if (data.find(section) != data.end())
-    {
-        data[section].erase(key);
-    }
-}
-
-void IniParser::remove_keys_with_value(
-    const std::string& section, const std::string& value)
-{
-    if (data.find(section) != data.end())
-    {
-        for (auto it = data[section].begin(); it != data[section].end();)
+        for (const auto& line : section->second)
         {
-            if (it->second == value)
+            if (line.key == key)
             {
-                it = data[section].erase(it);
-            }
-            else
-            {
-                ++it;
+                return line.value;
             }
         }
     }
+    return ""; // Return empty string if key not found
 }
+
+std::vector<std::string> IniParser::get_master_admins() const
+{
+    std::vector<std::string> masterAdmins;
+    auto section = sections.find("master_admins");
+    if (section != sections.end())
+    {
+        for (const auto& line : section->second)
+        {
+            masterAdmins.push_back(line.value);
+        }
+    }
+    return masterAdmins;
+}
+
+void print_sections(const std::map<std::string, std::vector<Line>>& sections)
+{
+    for (const auto& section : sections)
+    {
+        std::cout << "[" << section.first << "]" << std::endl;
+        for (const auto& line : section.second)
+        {
+            std::cout << line.key << " = " << line.value << std::endl;
+        }
+        std::cout << std::endl;
+    }
+}
+
+std::vector<std::string> IniParser::get_admins() const
+{
+    std::vector<std::string> admins;
+    auto section = sections.find("admins");
+    if (section != sections.end())
+    {
+        for (const auto& line : section->second)
+        {
+            admins.push_back(line.value);
+        }
+    }
+    return admins;
+}
+
+void IniParser::set_value(const std::string& sectionName,
+    const std::string& key, const std::string& value)
+{
+    for (auto& line : sections[sectionName])
+    {
+        if (line.key == key)
+        {
+            line.value = value;
+            return;
+        }
+    }
+    // If key not found, add a new line
+    Line newLine;
+    newLine.key = key;
+    newLine.value = value;
+    sections[sectionName].push_back(newLine);
+}
+
+void IniParser::remove_key(
+    const std::string& sectionName, const std::string& key)
+{
+    auto& section = sections[sectionName];
+    section.erase(std::remove_if(section.begin(), section.end(),
+                      [&](const Line& line) { return line.key == key; }),
+        section.end());
+}
+
+void IniParser::remove_section(const std::string& sectionName)
+{
+    sections.erase(sectionName);
+}
+
+void IniParser::save(const std::string& filePath)
+{
+    std::ofstream outFile(filePath);
+    if (!outFile.is_open())
+    {
+        cli_tools::print_error(
+            "Failed to open file: " + cli_tools::bold(filePath));
+        return;
+    }
+
+    for (const auto& section : sections)
+    {
+        outFile << "[" << section.first << "]" << std::endl;
+        for (const auto& line : section.second)
+        {
+            if (!line.comment.empty())
+            {
+                outFile << "; " << line.comment << std::endl;
+            }
+            outFile << line.key << " = " << line.value << std::endl;
+        }
+        outFile << std::endl; // Ajoute une ligne vide après chaque section
+    }
+
+    saved = true;
+    outFile.close();
+}
+
+void IniParser::parse()
+{
+    std::ifstream fileStream(path);
+    if (!fileStream.is_open())
+    {
+        cli_tools::print_error("Failed to open file: " + cli_tools::bold(path));
+        return;
+    }
+
+    std::string currentSection;
+    std::string line;
+    while (std::getline(fileStream, line))
+    {
+        trim(line);
+        if (line.empty() || line[0] == ';' || line[0] == '#')
+        {
+            // Ignore empty lines and comments
+            continue;
+        }
+        else if (line[0] == '[' && line[line.length() - 1] == ']')
+        {
+            // Found a section
+            currentSection = line.substr(1, line.length() - 2);
+        }
+        else
+        {
+            // Found a key-value pair
+            std::stringstream lineStream(line);
+            std::string key, value;
+            std::getline(lineStream, key, '=');
+            trim(key);
+            std::getline(lineStream, value);
+            trim(value);
+
+            Line configLine;
+            configLine.key = key;
+            configLine.value = value;
+            sections[currentSection].push_back(configLine);
+        }
+    }
+    fileStream.close();
+};
 } // namespace config
