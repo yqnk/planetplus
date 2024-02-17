@@ -31,6 +31,13 @@ class IniParser
     void load();
 
     /**
+     * @brief Trim leading and trailing whitespace from a string.
+     *
+     * @param str The string to trim.
+     */
+    void trim(std::string& str);
+
+    /**
      * @brief Save the contents of the INI file to disk.
      */
     void save();

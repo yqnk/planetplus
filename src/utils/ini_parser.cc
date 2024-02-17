@@ -51,6 +51,11 @@ void IniParser::load()
                 {
                     std::string key = line.substr(0, pos);
                     std::string value = line.substr(pos + 1);
+
+                    // trim leading and trailing whitespace
+                    trim(key);
+                    trim(value);
+
                     data[currentSection][key] = value;
                 }
             }
@@ -95,6 +100,11 @@ void IniParser::save()
         cli_tools::print_error(
             "!! Unable to open file: " + cli_tools::bold(path));
     }
+}
+
+void IniParser::trim(std::string& str)
+{
+    // TODO : trim
 }
 
 std::string IniParser::get(const std::string& section, const std::string& key)
