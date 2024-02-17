@@ -3,6 +3,7 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <algorithm>
 
 #include "cli/tools.h"
 
@@ -34,30 +35,20 @@ void IniParser::load()
             if (line.empty()) // Ignore empty lines
                 continue;
 
+            trim(line);
+
             // Check if the line is a comment
             if (line[0] == ';')
             {
-                // Add the comment to the current section
-                data[currentSection][";comment"] += line + "\n";
+                // Handle comments
             }
             else if (line[0] == '[' && line[line.size() - 1] == ']')
             { // New section
-                currentSection = line.substr(1, line.size() - 2);
+                // Handle section
             }
             else
             {
-                size_t pos = line.find('=');
-                if (pos != std::string::npos)
-                {
-                    std::string key = line.substr(0, pos);
-                    std::string value = line.substr(pos + 1);
-
-                    // trim leading and trailing whitespace
-                    trim(key);
-                    trim(value);
-
-                    data[currentSection][key] = value;
-                }
+                // Handle key-value pair
             }
         }
         file.close();
@@ -104,7 +95,13 @@ void IniParser::save()
 
 void IniParser::trim(std::string& str)
 {
-    // TODO : trim
+    str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+
+    str.erase(std::find_if(str.rbegin(), str.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), str.end());
 }
 
 std::string IniParser::get(const std::string& section, const std::string& key)
