@@ -1,27 +1,45 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <ini_parser.h>
+#include <string>
 
 namespace database
 {
-class Handler
+class Manager
 {
   public:
-    const std::string kHost;
-    const std::string kPort;
-    const std::string kUser;
-    const std::string kPassword;
-    const std::string kName;
+    std::string host;
+    std::string user;
+    std::string port;
+    std::string password;
+    std::string name;
 
-    // Connect to the database
+    /**
+     * @brief disconnect from the database
+     * 
+     * @return true 
+     * @return false 
+     */
     bool connect();
 
-    // Disconnect from the database
+    /**
+     * @brief disconnect from the database
+     * 
+     * @return true 
+     * @return false 
+     */
     bool disconnect();
 
-    explicit Handler(config::IniParser& ini);
-    ~Handler();
+    /**
+     * @brief Execute a sql query
+     * 
+     * @param query 
+     * @return int 
+     */
+    int execute_query(const std::string& query);
+
+    explicit Manager(std::string config_path);
+    ~Manager();
 };
 } // namespace Database
 
