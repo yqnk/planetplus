@@ -2,6 +2,7 @@
 #define CLI_TOOLS_H
 
 #include <iostream>
+#include <string>
 #include <map>
 
 // Output codes
@@ -93,9 +94,45 @@ void print_warning(const std::string& message);
  */
 bool confirm_action(const std::string& prompt);
 
+/**
+ * @brief Gets user input.
+ *
+ * @param prompt The message to be displayed to the user.
+ * @return The user's input.
+ */
+std::string get_input(const std::string& prompt);
+
+/**
+ * @brief Creates a file.
+ *
+ * @param path The path to the file to be created.
+ * @param mode The mode to be used when creating the file.
+ * @return 0 if the file was created successfully, otherwise -1.
+ */
 int create_file(const char* path, const char* mode);
+
+/**
+ * @brief Creates a directory.
+ *
+ * @param path The path to the directory to be created.
+ * @return 0 if the directory was created successfully, otherwise -1.
+ */
 int create_dir(const char* path);
+
+/**
+ * @brief Removes a file.
+ *
+ * @param path The path to the file to be removed.
+ * @return 0 if the file was removed successfully, otherwise -1.
+ */
 int remove_file(const char* path);
+
+/**
+ * @brief Removes a directory.
+ *
+ * @param path The path to the directory to be removed.
+ * @return 0 if the directory was removed successfully, otherwise -1.
+ */
 int remove_dir(const char* path);
 } // namespace cli
 

@@ -63,6 +63,15 @@ bool confirm_action(const std::string& prompt)
     return (input == "yes" || input == "y" || input == "Y");
 }
 
+std::string get_input(const std::string& prompt)
+{
+    // Code to get user input
+    std::string input;
+    std::cout << prompt;
+    std::cin >> input;
+    return input;
+}
+
 int create_file(const char* path, const char* mode)
 {
     FILE* file = fopen(path, mode);
