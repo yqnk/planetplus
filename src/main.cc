@@ -3,6 +3,7 @@
 
 #include "cli/commands/commands.h"
 #include "cli/tools.h"
+#include "utils/config.h"
 
 using namespace std;
 
@@ -22,8 +23,21 @@ int main(int argc, char const* argv[])
             cli_commands::planetplus_version();
         else if (tmp == "--setup")
             cli_commands::planetplus_setup();
-        else
-            break;
+        else if (tmp == "--test")
+        {
+            std::string value = "\"planetplus\"";
+            while (value[0] == '"' || value[0] == '\'')
+            {
+                value.erase(0, 1);
+            }
+
+            while (value[value.size() - 1] == '"' || value[value.size() - 1] == '\'')
+            {
+                value.erase(value.size() - 1, 1);
+            }
+            std::cout << value << std::endl;
+        }
+        break;
     }
     return 0;
 }
