@@ -88,6 +88,13 @@ void print_success(const std::string& message);
 void print_warning(const std::string& message);
 
 /**
+ * @brief Prints an info message in blue.
+ *
+ * @param message The info message to be printed.
+ */
+void print_info(const std::string& message);
+
+/**
  * @brief Asks the user to confirm an action with "yes" or "no".
  *
  * @param prompt The confirmation message to be displayed.

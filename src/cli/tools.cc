@@ -12,8 +12,6 @@
 #include <string>
 #include <sys/stat.h>
 
-#include "utils/ini_parser.h"
-
 namespace cli_tools
 {
 void clear_screen()
@@ -51,6 +49,12 @@ void print_warning(const std::string& message)
 {
     // Code to print a warning message in yellow
     print_color(message, color::FG_YELLOW);
+}
+
+void print_info(const std::string& message)
+{
+    // Code to print an info message in blue
+    print_color(message, color::FG_BLUE);
 }
 
 bool confirm_action(const std::string& prompt)
