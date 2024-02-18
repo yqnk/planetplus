@@ -58,8 +58,10 @@ add_executable(planetplus MACOSX_BUNDLE
     cli/tools.h
     cli/tools.cc
 
-    utils/ini_parser.h
-    utils/ini_parser.cc
+    utils/utils.h
+    utils/utils.cc
+    utils/config.h
+    utils/config.cc
 
     main.cc)
 
