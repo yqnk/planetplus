@@ -3,6 +3,7 @@
 #include <mysql/mysql.h>
 
 #include <string>
+#include <fstream>
 
 #include "cli/tools.h"
 #include "utils/config.h"
@@ -58,7 +59,7 @@ void Manager::disconnect()
     this->disconnected_ = true;
 }
 
-int Manager::execute_query(const std::string& query)
+int Manager::executeQuery(const std::string& query)
 {
     if (this->disconnected_)
     {
@@ -69,6 +70,47 @@ int Manager::execute_query(const std::string& query)
     if (this->conn == nullptr)
     {
         cli_tools::print_error("!! Database connection returned nullptr.");
+        return -1;
+    }
+
+    if (mysql_query(this->conn, query.c_str()))
+    {
+        cli_tools::print_error("!! mysql_query() failed");
+        return -1;
+    }
+
+    cli_tools::print_success("Query executed successfully.");
+    return 0;
+}
+
+int Manager::executeFromFile(const std::string& file_path)
+{
+    if (this->disconnected_)
+    {
+        cli_tools::print_error("!! Database is disconnected");
+        return -1;
+    }
+
+    if (this->conn == nullptr)
+    {
+        cli_tools::print_error("!! Database connection returned nullptr.");
+        return -1;
+    }
+
+    std::string query;
+    std::string line;
+    std::ifstream file(file_path);
+    if (file.is_open())
+    {
+        while (std::getline(file, line))
+        {
+            query += line;
+        }
+        file.close();
+    }
+    else
+    {
+        cli_tools::print_error("!! Unable to open file: " + file_path);
         return -1;
     }
 

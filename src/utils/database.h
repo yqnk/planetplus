@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "utils/config.h"
+
 namespace database
 {
 class Manager
@@ -27,7 +29,15 @@ class Manager
      * @param query
      * @return int
      */
-    int execute_query(const std::string& query);
+    int executeQuery(const std::string& query);
+
+    /**
+     * @brief Execute a sql query from a file
+     *
+     * @param file_path
+     * @return int
+     */
+    int executeFromFile(const std::string& file_path);
 
     Manager::Manager(std::string config_path, config::Config* config);
     ~Manager();
