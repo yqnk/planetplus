@@ -28,7 +28,7 @@ Config::~Config()
         cli_tools::print_warning("Configuration file not saved. Consider using "
                                  "config::Config::save() first.");
         cli_tools::print_info("-> This is a mistake from the developer of the "
-                              "project, please report it.\n");
+                              "project, please report it.");
         save();
     }
 }
@@ -172,6 +172,19 @@ std::string Config::get(const std::string& section, const std::string& key)
         cli_tools::print_warning(
             "Section not found: " + cli_tools::bold(section) + "\n");
         return "";
+    }
+
+    if (key == "owners")
+    {
+        return utils::join(owners_, ", ");
+    }
+    else if (key == "masteradmins")
+    {
+        return utils::join(masteradmins_, ", ");
+    }
+    else if (key == "admins")
+    {
+        return utils::join(admins_, ", ");
     }
 
     for (std::pair<std::string, std::string>& pair : data_[section])
