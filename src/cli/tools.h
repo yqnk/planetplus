@@ -64,7 +64,7 @@ std::string bold(const std::string& message);
  * @param color   The color of the text.
  * @param output  The output stream to be used.
  */
-void print_color(const std::string& message, color::Code color, std::ostream& output = std::cout);
+void print_color(const std::string& message, color::Code color, std::ostream& output = std::cout, char end = '\n');
 
 /**
  * @brief Prints an error message in red.
@@ -91,8 +91,9 @@ void print_warning(const std::string& message);
  * @brief Prints an info message in blue.
  *
  * @param message The info message to be printed.
+ * @param end     The character to be printed at the end of the message.
  */
-void print_info(const std::string& message);
+void print_info(const std::string& message, char end = '\n');
 
 /**
  * @brief Asks the user to confirm an action with "yes" or "no".

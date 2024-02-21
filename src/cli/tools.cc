@@ -26,11 +26,11 @@ std::string bold(const std::string& message)
     return "\033[1m" + message + "\033[0m";
 }
 
-void print_color(const std::string& message, color::Code col, std::ostream& output)
+void print_color(const std::string& message, color::Code col, std::ostream& output, char end)
 {
     // Code to print colored text
     output << color::Modifier(col) << message
-           << color::Modifier(color::FG_DEFAULT) << std::endl;
+           << color::Modifier(color::FG_DEFAULT) << end;
 }
 
 void print_error(const std::string& message)
@@ -51,10 +51,10 @@ void print_warning(const std::string& message)
     print_color(message, color::FG_YELLOW);
 }
 
-void print_info(const std::string& message)
+void print_info(const std::string& message, char end)
 {
     // Code to print an info message in blue
-    print_color(message, color::FG_BLUE);
+    print_color(message, color::FG_BLUE, std::cout, end);
 }
 
 bool confirm_action(const std::string& prompt)
