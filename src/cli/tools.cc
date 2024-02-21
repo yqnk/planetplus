@@ -4,6 +4,7 @@
 #include <windows.h>
 #else
 #include <unistd.h>
+#include <termios.h>
 #endif
 
 #include <cstdlib>
@@ -69,11 +70,20 @@ bool confirmAction(const std::string& prompt)
 
 std::string getInput(const std::string& prompt)
 {
-    // Code to get user input
+    // Code to get user input.
+    // If input = '\n' then send empty string
     std::string input;
     std::cout << prompt;
-    std::cin >> input;
+    std::getline(std::cin, input);
     return input;
+}
+
+std::string getHiddenInput(const std::string& prompt)
+{
+    // Replace every character written by the user with '*'
+    std::string input;
+    std::cout << prompt;
+    
 }
 
 int createFile(const char* path, const char* mode)

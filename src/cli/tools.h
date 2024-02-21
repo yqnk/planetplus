@@ -112,6 +112,12 @@ bool confirmAction(const std::string& prompt);
 std::string getInput(const std::string& prompt);
 
 /**
+ * @brief Gets user input and hides it while writing. Useful for passwords for example.
+ * 
+ */
+std::string getHiddenInput(const std::string& prompt);
+
+/**
  * @brief Creates a file.
  *
  * @param path The path to the file to be created.
