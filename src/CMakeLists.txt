@@ -13,14 +13,14 @@ endif()
 
 # configure version.cpp.in with selected version
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cversion.cc.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cversion.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/version.cc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/version.cc"
 )
 
 # If you want to have date and time of the build, your targets has to depend on this.
 # This will force recompilation of version.o and thus forcing gcc to update __DATE__ macro.
 add_custom_target(versionFileTouchForRebuild
-    COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/cversion.cc")
+    COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/version.cc")
 
 # ------------------------------------------------------------------------------
 # Libraries dependencies
@@ -49,11 +49,12 @@ set(ICON_RESOURCE "")
 
 add_executable(planetplus MACOSX_BUNDLE
     ${ICON_RESOURCE}
-    ${CMAKE_CURRENT_BINARY_DIR}/cversion.cc
+    ${CMAKE_CURRENT_BINARY_DIR}/version.cc
 
     cli/commands/commands.h
-    cli/commands/version.cc
-    cli/commands/setup.cc
+    cli/commands/cversion.cc
+    cli/commands/csetup.cc
+    cli/commands/cconfig.cc
 
     cli/tools.h
     cli/tools.cc
