@@ -52,6 +52,7 @@ add_executable(planetplus MACOSX_BUNDLE
     ${CMAKE_CURRENT_BINARY_DIR}/version.cc
 
     cli/commands/commands.h
+    cli/commands/chelp.cc
     cli/commands/cversion.cc
     cli/commands/csetup.cc
     cli/commands/cconfig.cc
