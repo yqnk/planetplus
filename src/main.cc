@@ -19,7 +19,9 @@ int main(int argc, char const* argv[])
     {
         string tmp = argv[argIt];
 
-        if (tmp == "--version" || tmp == "-v")
+        if (tmp == "--help" || tmp == "-h")
+            cli_commands::planetplusHelp();
+        else if (tmp == "--version" || tmp == "-v")
             cli_commands::planetplusVersion();
         else if (tmp == "--setup")
             cli_commands::planetplusSetup();

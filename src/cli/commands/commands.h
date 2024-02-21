@@ -13,6 +13,12 @@
 
 namespace cli_commands
 {
+
+/**
+ * @brief Print the help message for the planetplus server/instance.
+ */
+void planetplusHelp();
+
 /**
  * @brief Set the up planetplus server/instance.
 *          - Create the default configuration file.
