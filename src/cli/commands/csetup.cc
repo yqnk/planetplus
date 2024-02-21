@@ -6,6 +6,7 @@
 
 #include "cli/tools.h"
 #include "utils/config.h"
+#include "utils/utils.h"
 
 namespace
 {
@@ -259,6 +260,20 @@ void planetplusSetup()
         cli_tools::getInput("Enter your MariaDB password: ");
 
     std::cout << "\n> Saving database credentials..." << std::endl;
+
+    utils::trim(db_host);
+    utils::trim(db_port);
+
+    if (db_host.empty())
+    {
+        db_host = "localhost";
+    }
+
+    if (db_port.empty())
+    {
+        db_port = "3306";
+    }
+    
     config.set("database", "host", db_host);
     config.set("database", "port", db_port);
     config.set("database", "user", db_user);
