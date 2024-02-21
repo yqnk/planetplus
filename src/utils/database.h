@@ -20,6 +20,8 @@ class Manager
 
     MYSQL* conn;
 
+    void init();
+
     bool connect();
     void disconnect();
 

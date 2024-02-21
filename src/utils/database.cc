@@ -31,6 +31,24 @@ Manager::~Manager()
     }
 }
 
+void Manager::init()
+{
+    // Create database if it does not exist
+    if (this->connect())
+    {
+        std::string query = "CREATE DATABASE IF NOT EXISTS " + this->name;
+        if (this->executeQuery(query) == 0)
+        {
+            cli_tools::printSuccess("Database created successfully.");
+        }
+        else
+        {
+            cli_tools::printError("!! Failed to create database.");
+        }
+        this->disconnect();
+    }
+}
+
 bool Manager::connect()
 {
     this->conn = mysql_init(nullptr);
