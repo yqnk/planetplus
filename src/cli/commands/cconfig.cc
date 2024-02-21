@@ -8,7 +8,7 @@
 
 namespace cli_commands
 {
-int planetplus_get_config(std::string section, std::string key)
+int planetplusGetConfig(std::string section, std::string key)
 {
     std::string base_dir_path = BASE_DIR;
     base_dir_path += "planetplus/";
@@ -28,7 +28,7 @@ int planetplus_get_config(std::string section, std::string key)
     return CLI_EXIT_SUCCESS;
 }
 
-int planetplus_set_config(
+int planetplusSetConfig(
     std::string section, std::string key, std::string value)
 {
     std::string base_dir_path = BASE_DIR;
@@ -40,5 +40,12 @@ int planetplus_set_config(
 
     config::Config config(base_dir_path + "config/config.conf");
     config.load();
+
+    config.set(section, key, value);
+    config.save();
+
+    std::cout << section << "." << key << " = " << cli_tools::bold(value) << std::endl;
+
+    return CLI_EXIT_SUCCESS;
 }
 } // namespace cli_commands
