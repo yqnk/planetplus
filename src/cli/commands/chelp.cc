@@ -14,7 +14,7 @@ void planetplusHelp()
                  "  --get-config   get the value of a configuration key\n"
                  "  --set-config   set the value of a configuration key\n"
                  "\n"
-                 "Report bugs on GitHub or on Discord (DISCORD_INVITE_LINK)."
+                 "Please report bugs on GitHub or on Discord (DISCORD_INVITE_LINK)."
               << std::endl;
 }
 } // namespace cli_commands
