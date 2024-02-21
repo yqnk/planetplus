@@ -40,8 +40,8 @@ class Config
     bool saved_;
     bool loaded_;
 
-    void parse_value(std::string& value);
-    void check_if_loaded();
+    void parseValue(std::string& value);
+    void checkIfLoaded();
 };
 } // namespace utils
 

@@ -23,9 +23,9 @@ Manager::~Manager()
 {
     if (!this->disconnected_)
     {
-        cli_tools::print_warning("Did not disconnect from the database, some "
+        cli_tools::printWarning("Did not disconnect from the database, some "
                                  "changes may not have been saved.");
-        cli_tools::print_info("-> This is a mistake from the developer of the "
+        cli_tools::printInfo("-> This is a mistake from the developer of the "
                               "project, please report it.");
         this->disconnect();
     }
@@ -36,7 +36,7 @@ bool Manager::connect()
     this->conn = mysql_init(nullptr);
     if (this->conn == nullptr)
     {
-        cli_tools::print_error("!! mysql_init() failed");
+        cli_tools::printError("!! mysql_init() failed");
         return false;
     }
 
@@ -44,18 +44,18 @@ bool Manager::connect()
                            this->password.c_str(), this->name.c_str(),
                            std::stoi(this->port), nullptr, 0) == nullptr)
     {
-        cli_tools::print_error("!! mysql_real_connect() failed");
+        cli_tools::printError("!! mysql_real_connect() failed");
         return false;
     }
 
-    cli_tools::print_success("Connection to database established.");
+    cli_tools::printSuccess("Connection to database established.");
     return true;
 }
 
 void Manager::disconnect()
 {
     mysql_close(this->conn);
-    cli_tools::print_success("Disconnected from database.");
+    cli_tools::printSuccess("Disconnected from database.");
     this->disconnected_ = true;
 }
 
@@ -63,23 +63,23 @@ int Manager::executeQuery(const std::string& query)
 {
     if (this->disconnected_)
     {
-        cli_tools::print_error("!! Database is disconnected");
+        cli_tools::printError("!! Database is disconnected");
         return -1;
     }
 
     if (this->conn == nullptr)
     {
-        cli_tools::print_error("!! Database connection returned nullptr.");
+        cli_tools::printError("!! Database connection returned nullptr.");
         return -1;
     }
 
     if (mysql_query(this->conn, query.c_str()))
     {
-        cli_tools::print_error("!! mysql_query() failed");
+        cli_tools::printError("!! mysql_query() failed");
         return -1;
     }
 
-    cli_tools::print_success("Query executed successfully.");
+    cli_tools::printSuccess("Query executed successfully.");
     return 0;
 }
 
@@ -87,13 +87,13 @@ int Manager::executeFromFile(const std::string& file_path)
 {
     if (this->disconnected_)
     {
-        cli_tools::print_error("!! Database is disconnected");
+        cli_tools::printError("!! Database is disconnected");
         return -1;
     }
 
     if (this->conn == nullptr)
     {
-        cli_tools::print_error("!! Database connection returned nullptr.");
+        cli_tools::printError("!! Database connection returned nullptr.");
         return -1;
     }
 
@@ -110,17 +110,17 @@ int Manager::executeFromFile(const std::string& file_path)
     }
     else
     {
-        cli_tools::print_error("!! Unable to open file: " + file_path);
+        cli_tools::printError("!! Unable to open file: " + file_path);
         return -1;
     }
 
     if (mysql_query(this->conn, query.c_str()))
     {
-        cli_tools::print_error("!! mysql_query() failed");
+        cli_tools::printError("!! mysql_query() failed");
         return -1;
     }
 
-    cli_tools::print_success("Query executed successfully.");
+    cli_tools::printSuccess("Query executed successfully.");
     return 0;
 }
 } // namespace Database

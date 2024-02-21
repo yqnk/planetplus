@@ -28,7 +28,7 @@ int planetplusGetConfig(std::string section, std::string key)
     return CLI_EXIT_SUCCESS;
 }
 
-int planetplusSetConfig(
+int PlanetplusSetConfig(
     std::string section, std::string key, std::string value)
 {
     std::string base_dir_path = BASE_DIR;

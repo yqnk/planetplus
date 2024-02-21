@@ -47,7 +47,7 @@ namespace cli_tools
 /**
  * @brief Clears the console screen.
  */
-void clear_screen();
+void clearScreen();
 
 /**
  * @brief Makes the text bold.
@@ -64,28 +64,28 @@ std::string bold(const std::string& message);
  * @param color   The color of the text.
  * @param output  The output stream to be used.
  */
-void print_color(const std::string& message, color::Code color, std::ostream& output = std::cout, char end = '\n');
+void printColor(const std::string& message, color::Code color, std::ostream& output = std::cout, char end = '\n');
 
 /**
  * @brief Prints an error message in red.
  *
  * @param message The error message to be printed.
  */
-void print_error(const std::string& message);
+void printError(const std::string& message);
 
 /**
  * @brief Prints a success message in green.
  *
  * @param message The success message to be printed.
  */
-void print_success(const std::string& message);
+void printSuccess(const std::string& message);
 
 /**
  * @brief Prints a warning message in yellow.
  *
  * @param message The warning message to be printed.
  */
-void print_warning(const std::string& message);
+void printWarning(const std::string& message);
 
 /**
  * @brief Prints an info message in blue.
@@ -93,7 +93,7 @@ void print_warning(const std::string& message);
  * @param message The info message to be printed.
  * @param end     The character to be printed at the end of the message.
  */
-void print_info(const std::string& message, char end = '\n');
+void printInfo(const std::string& message, char end = '\n');
 
 /**
  * @brief Asks the user to confirm an action with "yes" or "no".
@@ -101,7 +101,7 @@ void print_info(const std::string& message, char end = '\n');
  * @param prompt The confirmation message to be displayed.
  * @return true if the user confirms with "yes", otherwise false.
  */
-bool confirm_action(const std::string& prompt);
+bool confirmAction(const std::string& prompt);
 
 /**
  * @brief Gets user input.
@@ -109,7 +109,7 @@ bool confirm_action(const std::string& prompt);
  * @param prompt The message to be displayed to the user.
  * @return The user's input.
  */
-std::string get_input(const std::string& prompt);
+std::string getInput(const std::string& prompt);
 
 /**
  * @brief Creates a file.
@@ -118,7 +118,7 @@ std::string get_input(const std::string& prompt);
  * @param mode The mode to be used when creating the file.
  * @return 0 if the file was created successfully, otherwise -1.
  */
-int create_file(const char* path, const char* mode);
+int createFile(const char* path, const char* mode);
 
 /**
  * @brief Creates a directory.
@@ -126,7 +126,7 @@ int create_file(const char* path, const char* mode);
  * @param path The path to the directory to be created.
  * @return 0 if the directory was created successfully, otherwise -1.
  */
-int create_dir(const char* path);
+int createDir(const char* path);
 
 /**
  * @brief Removes a file.
@@ -134,7 +134,7 @@ int create_dir(const char* path);
  * @param path The path to the file to be removed.
  * @return 0 if the file was removed successfully, otherwise -1.
  */
-int remove_file(const char* path);
+int removeFile(const char* path);
 
 /**
  * @brief Removes a directory.
@@ -142,7 +142,7 @@ int remove_file(const char* path);
  * @param path The path to the directory to be removed.
  * @return 0 if the directory was removed successfully, otherwise -1.
  */
-int remove_dir(const char* path);
+int removeDir(const char* path);
 } // namespace cli
 
 #endif // CLI_TOOLS_H

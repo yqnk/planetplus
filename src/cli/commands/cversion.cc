@@ -7,7 +7,7 @@
 
 namespace cli_commands
 {
-void planetplus_version()
+void planetplusVersion()
 {
     std::cout << "planetplus version "
               << cli_tools::bold(Version::current().asShortStr()) << std::endl;

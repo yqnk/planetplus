@@ -14,7 +14,7 @@
 
 namespace cli_tools
 {
-void clear_screen()
+void clearScreen()
 {
     // Code to clear the console screen
     std::system("clear"); // This command is specific to Unix/Linux
@@ -26,38 +26,38 @@ std::string bold(const std::string& message)
     return "\033[1m" + message + "\033[0m";
 }
 
-void print_color(const std::string& message, color::Code col, std::ostream& output, char end)
+void printColor(const std::string& message, color::Code col, std::ostream& output, char end)
 {
     // Code to print colored text
     output << color::Modifier(col) << message
            << color::Modifier(color::FG_DEFAULT) << end;
 }
 
-void print_error(const std::string& message)
+void printError(const std::string& message)
 {
     // Code to print an error message in red
-    print_color(message, color::FG_RED, std::cerr);
+    printColor(message, color::FG_RED, std::cerr);
 }
 
-void print_success(const std::string& message)
+void printSuccess(const std::string& message)
 {
     // Code to print a success message in green
-    print_color(message, color::FG_GREEN);
+    printColor(message, color::FG_GREEN);
 }
 
-void print_warning(const std::string& message)
+void printWarning(const std::string& message)
 {
     // Code to print a warning message in yellow
-    print_color(message, color::FG_YELLOW);
+    printColor(message, color::FG_YELLOW);
 }
 
-void print_info(const std::string& message, char end)
+void printInfo(const std::string& message, char end)
 {
     // Code to print an info message in blue
-    print_color(message, color::FG_BLUE, std::cout, end);
+    printColor(message, color::FG_BLUE, std::cout, end);
 }
 
-bool confirm_action(const std::string& prompt)
+bool confirmAction(const std::string& prompt)
 {
     // Code to ask the user for confirmation
     std::string input;
@@ -67,7 +67,7 @@ bool confirm_action(const std::string& prompt)
     return (input == "yes" || input == "y" || input == "Y");
 }
 
-std::string get_input(const std::string& prompt)
+std::string getInput(const std::string& prompt)
 {
     // Code to get user input
     std::string input;
@@ -76,7 +76,7 @@ std::string get_input(const std::string& prompt)
     return input;
 }
 
-int create_file(const char* path, const char* mode)
+int createFile(const char* path, const char* mode)
 {
     FILE* file = fopen(path, mode);
     if (file == NULL)
@@ -87,7 +87,7 @@ int create_file(const char* path, const char* mode)
     return CLI_EXIT_SUCCESS;
 }
 
-int create_dir(const char* path)
+int createDir(const char* path)
 {
 #ifdef _WIN32
     // Windows specific code
@@ -106,7 +106,7 @@ int create_dir(const char* path)
 }
 
 
-int remove_file(const char* path)
+int removeFile(const char* path)
 {
     if (remove(path) != 0)
     {
@@ -115,7 +115,7 @@ int remove_file(const char* path)
     return CLI_EXIT_SUCCESS;
 }
 
-int remove_dir(const char* path)
+int removeDir(const char* path)
 {
 #ifdef _WIN32
     // Windows specific code

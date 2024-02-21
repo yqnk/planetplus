@@ -20,9 +20,9 @@ int main(int argc, char const* argv[])
         string tmp = argv[argIt];
 
         if (tmp == "--version" || tmp == "-v")
-            cli_commands::planetplus_version();
+            cli_commands::planetplusVersion();
         else if (tmp == "--setup")
-            cli_commands::planetplus_setup();
+            cli_commands::planetplusSetup();
         else if (tmp == "--test")
         {
             std::string value = "\"planetplus\"";
@@ -42,28 +42,28 @@ int main(int argc, char const* argv[])
         {
             if (argIt + 2 >= argc)
             {
-                cli_tools::print_error("Not enough arguments for --get-config");
+                cli_tools::printError("Not enough arguments for --get-config");
                 return CLI_EXIT_FAILURE;
             }
             argIt++;
-            cli_commands::planetplus_get_config(argv[argIt], argv[argIt + 1]);
+            cli_commands::planetplusGetConfig(argv[argIt], argv[argIt + 1]);
             argIt++;
         }
         else if (tmp == "--set-config")
         {
             if (argIt + 3 >= argc)
             {
-                cli_tools::print_error("Not enough arguments for --set-config");
+                cli_tools::printError("Not enough arguments for --set-config");
                 return CLI_EXIT_FAILURE;
             }
             argIt++;
-            cli_commands::planetplus_set_config(
+            cli_commands::planetplusSetConfig(
                 argv[argIt], argv[argIt + 1], argv[argIt + 2]);
             argIt += 2;
         }
         else
         {
-            cli_tools::print_error("Unknown argument: " + tmp);
+            cli_tools::printError("Unknown argument: " + tmp);
             return CLI_EXIT_FAILURE;
         }
         break;

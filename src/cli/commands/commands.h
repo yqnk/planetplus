@@ -20,24 +20,24 @@ namespace cli_commands
 *          - Create the default tables.
 *          - Create the default logs.
  */
-void planetplus_setup();
+void planetplusSetup();
 
 /**
  * @brief Print the current version of the planetplus server/instance.
  */
-void planetplus_version();
+void planetplusVersion();
 
 /**
  * @brief Change config values
  *
  */
-int planetplus_get_config(std::string section, std::string key);
+int planetplusGetConfig(std::string section, std::string key);
 
 /**
  * @brief Change config values
  *
  */
-int planetplus_set_config(
+int planetplusSetConfig(
     std::string section, std::string key, std::string value);
 }
 

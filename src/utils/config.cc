@@ -25,9 +25,9 @@ Config::~Config()
 {
     if (!saved_)
     {
-        cli_tools::print_warning("Configuration file not saved. Consider using "
+        cli_tools::printWarning("Configuration file not saved. Consider using "
                                  "config::Config::save() first.");
-        cli_tools::print_info("-> This is a mistake from the developer of the "
+        cli_tools::printInfo("-> This is a mistake from the developer of the "
                               "project, please report it.");
         save();
     }
@@ -39,7 +39,7 @@ void Config::load()
 
     if (!fileStream.is_open())
     {
-        cli_tools::print_error(
+        cli_tools::printError(
             "Failed to open file: " + cli_tools::bold(path_));
         return;
     }
@@ -61,7 +61,7 @@ void Config::load()
         {
             if (currentSection.empty())
             {
-                cli_tools::print_warning(
+                cli_tools::printWarning(
                     "No section for key-value pair: " + cli_tools::bold(line));
                 continue;
             }
@@ -71,7 +71,7 @@ void Config::load()
                 utils::trim(key);
                 std::string value = line.substr(line.find('=') + 1);
                 utils::trim(value);
-                parse_value(value);
+                parseValue(value);
 
                 if (currentSection == "planetplus")
                 {
@@ -124,7 +124,7 @@ void Config::save()
 
     if (!fileStream.is_open())
     {
-        cli_tools::print_error(
+        cli_tools::printError(
             "Failed to open file: " + cli_tools::bold(path_));
         return;
     }
@@ -166,10 +166,10 @@ void Config::save()
 
 std::string Config::get(const std::string& section, const std::string& key)
 {
-    check_if_loaded();
+    checkIfLoaded();
     if (data_.find(section) == data_.end())
     {
-        cli_tools::print_warning(
+        cli_tools::printWarning(
             "Section not found: " + cli_tools::bold(section) + "\n");
         return "";
     }
@@ -195,13 +195,13 @@ std::string Config::get(const std::string& section, const std::string& key)
         }
     }
 
-    cli_tools::print_warning("Key not found: " + cli_tools::bold(key) + "\n");
+    cli_tools::printWarning("Key not found: " + cli_tools::bold(key) + "\n");
     return "";
 }
 
 std::vector<std::string> Config::get(ConfigType type)
 {
-    check_if_loaded();
+    checkIfLoaded();
     switch (type)
     {
         case ConfigType::OWNER:
@@ -217,10 +217,10 @@ std::vector<std::string> Config::get(ConfigType type)
 void Config::set(const std::string& section, const std::string& key,
     const std::string& value)
 {
-    check_if_loaded();
+    checkIfLoaded();
     if (data_.find(section) == data_.end())
     {
-        cli_tools::print_warning(
+        cli_tools::printWarning(
             "Section not found: " + cli_tools::bold(section) + "\n");
     }
     else
@@ -237,7 +237,7 @@ void Config::set(const std::string& section, const std::string& key,
 
 void Config::set(const std::string& value, ConfigType type)
 {
-    check_if_loaded();
+    checkIfLoaded();
     switch (type)
     {
         case ConfigType::OWNER:
@@ -252,7 +252,7 @@ void Config::set(const std::string& value, ConfigType type)
     }
 }
 
-void Config::parse_value(std::string& value)
+void Config::parseValue(std::string& value)
 {
     // Remove " and ' from the beginning and end of the string
     while (value[0] == '"' || value[0] == '\'')
@@ -266,13 +266,13 @@ void Config::parse_value(std::string& value)
     }
 }
 
-void Config::check_if_loaded()
+void Config::checkIfLoaded()
 {
     if (!loaded_)
     {
-        cli_tools::print_warning("Configuration file not loaded. Consider "
+        cli_tools::printWarning("Configuration file not loaded. Consider "
                                  "using config::Config::load() first.");
-        cli_tools::print_info("-> This is a mistake from the developer of the "
+        cli_tools::printInfo("-> This is a mistake from the developer of the "
                               "project, please report it.\n");
     }
 }
